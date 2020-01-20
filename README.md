@@ -1,14 +1,14 @@
 # COMP472WIN20P1
 COMP472 WIN20 Project1 Concordia University
 
-Project 1
+##Project 1
 
-due date: 
+###due date: 
 
-late panelty:
+###late panelty:
 
 ----------------
-Group Members
+###Group Members
 | name | id | github username |
 | --- | --- | --- |
 | `Kevin Lin` | `40002383` | `AznBoy00` |
