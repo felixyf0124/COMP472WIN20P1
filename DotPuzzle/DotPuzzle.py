@@ -60,9 +60,13 @@ class DotPuzzle:
         self.board = board
         self.n = len(board)
 
-    #TODO return current game board status in 1D array
+    #return current game board status in string
     def getBoard(self):
-        pass
+        boardStr = ""
+        for i in range(self.n):
+            for j in range(self.n):
+                boardStr = boardStr+str(self.board[i][j])
+        return boardStr
 
     #Reads an input file
     def readInput(self):
@@ -75,9 +79,11 @@ class DotPuzzle:
             self.numPuzzles+1
             self.puzzle.append(line)
 
-    #Generates puzzle based on puzzle list 
+    #Generates puzzle based on input, must be told which puzzle to analyze  
     def createPuzzle(self, numPuzzle):
         puzzleStr=self.puzzle[numPuzzle-1].split()
+        #breaks up input string into a list with each 'part' as a list item
+
         self.n = int(puzzleStr[0])
         n=self.n
         self.board = np.random.rand(n,n)
@@ -99,3 +105,4 @@ print(p.board)
 p.display()
 #p.touch(1,1) #testing touch
 #p.display()
+print(p.getBoard())
