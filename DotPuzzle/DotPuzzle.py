@@ -1,8 +1,8 @@
 import numpy as np
 
 class DotPuzzle:
-    def __init__(self):
-        self.readInput()
+    def __init__(self, string):
+        self.readInput(string)
         self.createPuzzle(1)
         
     def display(self):
@@ -69,12 +69,12 @@ class DotPuzzle:
         return boardStr
 
     #Reads an input file
-    def readInput(self):
+    def readInput(self, string):
         self.numPuzzles=0
         #number of lines in the input file, aka. number of puzzles to be solved
 
         self.puzzle=[]
-        file = open("input.txt", "r")
+        file = open(string, "r")
         for line in file: 
             self.numPuzzles+1
             self.puzzle.append(line)
@@ -100,9 +100,6 @@ class DotPuzzle:
         self.board = self.board.astype(int)
    
 # test  
-p = DotPuzzle()
+p = DotPuzzle("input.txt")
 print(p.board)
 p.display()
-#p.touch(1,1) #testing touch
-#p.display()
-print(p.getBoard())
