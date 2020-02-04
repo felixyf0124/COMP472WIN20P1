@@ -79,20 +79,23 @@ class DotPuzzle:
     def createPuzzle(self, numPuzzle):
         puzzleStr=self.puzzle[numPuzzle-1].split()
         self.n = int(puzzleStr[0])
-        self.board = np.random.rand(self.n,self.n)
-        for i in range(len(self.board)):
-            for j in range(len(self.board[i])):
-                x = self.board[i][j]
+        n=self.n
+        self.board = np.random.rand(n,n)
+        puzzlePos = 0
+        for i in range(n):
+            for j in range(n):
+                x = int(puzzleStr[3][puzzlePos])
                 y = 0.5
                 if x >= y:
                     self.board[i][j] = 1
                 else:
                     self.board[i][j] = 0
+                puzzlePos=puzzlePos+1
         self.board = self.board.astype(int)
    
 # test  
 p = DotPuzzle()
 print(p.board)
 p.display()
-p.touch(1,1) #testing touch
-p.display()
+#p.touch(1,1) #testing touch
+#p.display()
