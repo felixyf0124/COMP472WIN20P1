@@ -37,12 +37,32 @@ class DotPuzzle:
                 else:
                     out += " O"
             out+="\n"
-        print(out)
+        print(out)  
     
 
-    #TODO
+    #flips each dot above, below, left, and right of a specified dot
     def touch(self, x, y):
-        pass
+        i1 = x-1
+        i2 = x+1
+        j1 = y-1
+        j2 = y+1
+        if (i1 >= 0):
+            self.touchMath(i1,y)
+        if (i2 < self.n):
+            self.touchMath(i2,y)
+        if (j1 >= 0):
+            self.touchMath(x,j1)
+        if (j2 < self.n):
+            self.touchMath(x,j2)
+
+    #flips a dot to 1 or 0 and vice-versa 
+    #for some reason, x and y need to be inverted in the def for it to work correctly
+    def touchMath(self, y, x):        
+        dotVal = self.board[x][y]+1
+        if dotVal == 1:
+            self.board[x][y] = 1
+        else:
+            self.board[x][y] = 0  
 
     #import from existing game status
     def importInit(self, board):
@@ -56,4 +76,6 @@ class DotPuzzle:
 # test  
 p = DotPuzzle(3)
 print(p.board)
+p.display()
+p.touch(1,0)
 p.display()
