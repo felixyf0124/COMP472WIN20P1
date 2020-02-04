@@ -39,6 +39,19 @@ class DotPuzzle:
             out+="\n"
         print(out)
     
+
+    #TODO
+    def touch(self, x, y):
+        pass
+
+    #import from existing game status
+    def importInit(self, board):
+        self.board = board
+        self.n = len(board)
+
+    #TODO return current game board status in 1D array
+    def getBoard(self):
+        pass
    
 # test  
 p = DotPuzzle(3)
