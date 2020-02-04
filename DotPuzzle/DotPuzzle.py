@@ -45,6 +45,9 @@ class DotPuzzle:
             self.touchMath(x,j1)
         if (j2 < self.n):
             self.touchMath(x,j2)
+        
+        #debug print each touchOuput, in future write to file
+        print(self.touchOutput(x, y))
 
     #flips a dot to 1 or 0 and vice-versa 
     #for some reason, x and y need to be inverted in the def for it to work correctly
@@ -53,12 +56,12 @@ class DotPuzzle:
         if dotVal == 1:
             self.board[x][y] = 1
         else:
-            self.board[x][y] = 0  
-
-    #import from existing game status
-    def importInit(self, board):
-        self.board = board
-        self.n = len(board)
+            self.board[x][y] = 0 
+    
+    #Generates the X# ######### string for file writing
+    def touchOutput(self, x, y):        
+        touchChange = str(chr(ord('@')+(x+1)) + str(y) + " " + str(self.getBoard()) + "\n")
+        return touchChange  
 
     #return current game board status in string
     def getBoard(self):
@@ -67,6 +70,11 @@ class DotPuzzle:
             for j in range(self.n):
                 boardStr = boardStr+str(self.board[i][j])
         return boardStr
+
+    #import from existing game status
+    def importInit(self, board):
+        self.board = board
+        self.n = len(board)
 
     #Reads an input file
     def readInput(self, string):
@@ -81,6 +89,7 @@ class DotPuzzle:
 
     #Generates puzzle based on input, must be told which puzzle to analyze  
     def createPuzzle(self, numPuzzle):
+        #self.currentPuzzle = numPuzzle-1     #will need this later on for output creation/appending
         puzzleStr=self.puzzle[numPuzzle-1].split()
         #breaks up input string into a list with each 'part' as a list item
 
@@ -103,3 +112,4 @@ class DotPuzzle:
 p = DotPuzzle("input.txt")
 print(p.board)
 p.display()
+p.touch(1,1)
