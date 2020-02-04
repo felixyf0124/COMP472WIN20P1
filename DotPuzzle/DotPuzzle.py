@@ -72,6 +72,19 @@ class DotPuzzle:
     #TODO return current game board status in 1D array
     def getBoard(self):
         pass
+
+    #Reads an input file
+    def readInput(self):
+        self.numPuzzles=0
+        #number of lines in the input file, aka. number of puzzles to be solved
+
+        file = open("input.txt", "r")
+        self.puzzle=[]
+        for line in file: 
+            self.numPuzzles+1
+            self.puzzle.append(line)
+        print (self.puzzle[0])
+        print (self.puzzle[1])
    
 # test  
 p = DotPuzzle(3)
@@ -79,3 +92,4 @@ print(p.board)
 p.display()
 p.touch(1,0)
 p.display()
+p.readInput()
