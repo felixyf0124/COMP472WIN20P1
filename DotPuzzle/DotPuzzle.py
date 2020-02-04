@@ -1,18 +1,9 @@
 import numpy as np
 
 class DotPuzzle:
-    def __init__(self, n):
-        self.n = int(n)
-        self.board = np.random.rand(n,n)
-        for i in range(len(self.board)):
-            for j in range(len(self.board[i])):
-                x = self.board[i][j]
-                y = 0.5
-                if x >= y:
-                    self.board[i][j] = 1
-                else:
-                    self.board[i][j] = 0
-        self.board = self.board.astype(int)
+    def __init__(self):
+        self.readInput()
+        self.createPuzzle(1)
         
     def display(self):
         out = "\n  |"
@@ -78,18 +69,30 @@ class DotPuzzle:
         self.numPuzzles=0
         #number of lines in the input file, aka. number of puzzles to be solved
 
-        file = open("input.txt", "r")
         self.puzzle=[]
+        file = open("input.txt", "r")
         for line in file: 
             self.numPuzzles+1
             self.puzzle.append(line)
-        print (self.puzzle[0])
-        print (self.puzzle[1])
+
+    #Generates puzzle based on puzzle list 
+    def createPuzzle(self, numPuzzle):
+        puzzleStr=self.puzzle[numPuzzle-1].split()
+        self.n = int(puzzleStr[0])
+        self.board = np.random.rand(self.n,self.n)
+        for i in range(len(self.board)):
+            for j in range(len(self.board[i])):
+                x = self.board[i][j]
+                y = 0.5
+                if x >= y:
+                    self.board[i][j] = 1
+                else:
+                    self.board[i][j] = 0
+        self.board = self.board.astype(int)
    
 # test  
-p = DotPuzzle(3)
+p = DotPuzzle()
 print(p.board)
 p.display()
-p.touch(1,0)
+p.touch(1,1) #testing touch
 p.display()
-p.readInput()
