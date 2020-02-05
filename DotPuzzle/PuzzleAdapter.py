@@ -1,4 +1,4 @@
-import DotPuzzle
+# import DotPuzzle
 
 class PuzzleAdapter:
     #constructor
