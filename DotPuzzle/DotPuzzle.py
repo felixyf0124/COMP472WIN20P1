@@ -9,7 +9,7 @@ class DotPuzzle:
         out = "\n  |"
         alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         for i in range(len(self.board[0])):
-            out += " " + str(i+1)
+            out += " " + str(i)
 
         out += "\n--|"
 
@@ -47,7 +47,7 @@ class DotPuzzle:
             self.touchMath(x,j2)
         
         #debug print each touchOuput, in future write to file
-        print(self.touchOutput(x, y))
+        self.touchOutput(x, y)
 
     #flips a dot to 1 or 0 and vice-versa 
     #for some reason, x and y need to be inverted in the def for it to work correctly
@@ -58,10 +58,12 @@ class DotPuzzle:
         else:
             self.board[x][y] = 0 
     
-    #Generates the X# ######### string for file writing
+    #Generates the YX ######### string and writes it to the search file
     def touchOutput(self, x, y):        
-        touchChange = str(chr(ord('@')+(x+1)) + str(y) + " " + str(self.getBoard()) + "\n")
-        return touchChange  
+        touchChange = str(chr(ord('@')+(y+1)) + str(x) + " " + str(self.getBoard()) + "\n")
+        file=open(self.searchFile,"a")
+        file.write(touchChange)
+        file.close()
 
     #return current game board status in string
     def getBoard(self):
@@ -86,10 +88,10 @@ class DotPuzzle:
         for line in file: 
             self.numPuzzles+1
             self.puzzle.append(line)
+        file.close()
 
     #Generates puzzle based on input, must be told which puzzle to analyze  
     def createPuzzle(self, numPuzzle):
-        #self.currentPuzzle = numPuzzle-1     #will need this later on for output creation/appending
         puzzleStr=self.puzzle[numPuzzle-1].split()
         #breaks up input string into a list with each 'part' as a list item
 
@@ -106,10 +108,19 @@ class DotPuzzle:
                 else:
                     self.board[i][j] = 0
                 puzzlePos=puzzlePos+1
+
         self.board = self.board.astype(int)
+        self.createSearchFile(numPuzzle)
+
+    #creates search file for current puzzle
+    #in future will be made dynamic for search type
+    def createSearchFile(self, numPuzzle):
+        self.searchFile = str(numPuzzle-1)+"_dfs_search.txt"
+        file=open(self.searchFile,"w")
+        file.write(str("0 " + str(self.getBoard()) + "\n"))
+        file.close()
    
 # test  
 p = DotPuzzle("input.txt")
 print(p.board)
 p.display()
-p.touch(1,1)
