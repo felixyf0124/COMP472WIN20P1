@@ -12,9 +12,11 @@ class Loader:
             self.myPuzzleList.append(myPuzzle)
         file.close()
 
+    #get specific puzzle at index
     def getMyPuzzleAt(self, index):
         return self.myPuzzleList[index]
 
+    #show all puzzle game list
     def showMyPuzzleList(self):
         for i in range(len(self.myPuzzleList)):
             line = ""
@@ -23,6 +25,8 @@ class Loader:
             line += self.myPuzzleList[i].max_l + " "
             line += self.myPuzzleList[i].state_1d + ""
             print(line)
+
+
 
 #test
 l = Loader("../test.txt")

@@ -1,15 +1,19 @@
 import numpy as np
 
 class DotPuzzle:
-    def __init__(self, string):
-        self.readInput(string)
-        self.createPuzzle(1)
+    def __init__(self, input):
+        if(isinstance(input,int)):
+            self.newGame(int(input))
+        else:
+            # self.readInput(str(input))
+            # self.createPuzzle(1)
+            pass
         
     def display(self):
         out = "\n  |"
         alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         for i in range(len(self.board[0])):
-            out += " " + str(i)
+            out += " " + str(i+1)
 
         out += "\n--|"
 
@@ -30,24 +34,42 @@ class DotPuzzle:
             out+="\n"
         print(out)  
     
+    def newGame(self,n):
+        self.n = n
+        self.board = np.random.rand(n,n)
+        for i in range(n):
+            for j in range(n):
+                x = (self.board[i][j])
+                y = 0.5
+                if x >= y:
+                    self.board[i][j] = 1
+                else:
+                    self.board[i][j] = 0
+        self.board = self.board.astype(int)
+
 
     #flips each dot above, below, left, and right of a specified dot
-    def touch(self, x, y):
-        i1 = x-1
-        i2 = x+1
-        j1 = y-1
-        j2 = y+1
+    def touch(self, y, x):
+        alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        jy = alpha.find(y.upper())
+        ix = int(x)-1
+        i1 = ix-1
+        i2 = ix+1
+        j1 = jy-1
+        j2 = jy+1
+        self.touchMath(ix,jy)
         if (i1 >= 0):
-            self.touchMath(i1,y)
+            self.touchMath(i1,jy)
         if (i2 < self.n):
-            self.touchMath(i2,y)
+            self.touchMath(i2,jy)
         if (j1 >= 0):
-            self.touchMath(x,j1)
+            self.touchMath(ix,j1)
         if (j2 < self.n):
-            self.touchMath(x,j2)
+            self.touchMath(ix,j2)
         
         #debug print each touchOuput, in future write to file
-        self.touchOutput(x, y)
+        self.display()
+        #self.touchOutput(x, y)
 
     #flips a dot to 1 or 0 and vice-versa 
     #for some reason, x and y need to be inverted in the def for it to work correctly
@@ -70,7 +92,7 @@ class DotPuzzle:
         boardStr = ""
         for i in range(self.n):
             for j in range(self.n):
-                boardStr = boardStr+str(self.board[i][j])
+                boardStr += str(self.board[i][j])
         return boardStr
 
     #import from existing game status
@@ -121,6 +143,6 @@ class DotPuzzle:
         file.close()
    
 # test  
-p = DotPuzzle("input.txt")
-print(p.board)
-p.display()
+#p = DotPuzzle(4)
+# print(p.board)
+# p.display()
