@@ -13,10 +13,12 @@ class Loader:
         file.close()
 
     #get specific puzzle at index
+    # tested
     def getMyPuzzleAt(self, index):
         return self.myPuzzleList[index]
 
     #show all puzzle game list
+    # tested
     def showMyPuzzleList(self):
         for i in range(len(self.myPuzzleList)):
             line = ""
@@ -29,6 +31,6 @@ class Loader:
 
 
 #test
-l = Loader("../test.txt")
-l.showMyPuzzleList()
+# l = Loader("../test.txt")
+# l.showMyPuzzleList()
   

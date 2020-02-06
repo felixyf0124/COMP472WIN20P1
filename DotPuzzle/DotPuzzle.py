@@ -8,7 +8,9 @@ class DotPuzzle:
             # self.readInput(str(input))
             # self.createPuzzle(1)
             pass
-        
+    
+    # display game board
+    # tested
     def display(self):
         out = "\n  |"
         alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -34,6 +36,8 @@ class DotPuzzle:
             out+="\n"
         print(out)  
     
+    #generate new nxn game with rand initials
+    # tested
     def newGame(self,n):
         self.n = n
         self.board = np.random.rand(n,n)
@@ -49,6 +53,7 @@ class DotPuzzle:
 
 
     #flips each dot above, below, left, and right of a specified dot
+    # tested
     def touch(self, y, x):
         alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         jy = alpha.find(y.upper())
@@ -88,6 +93,7 @@ class DotPuzzle:
         file.close()
 
     #return current game board status in string
+    # tested
     def getBoard(self):
         boardStr = ""
         for i in range(self.n):
