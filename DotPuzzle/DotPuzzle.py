@@ -1,12 +1,13 @@
 import numpy as np
 import math
+import Loader as ld
 
 class DotPuzzle:
     def __init__(self, input):
         if(isinstance(input,int)):
             self.newGame(int(input))
         else:
-            self.readInput(str(input))
+            self.puzzles = ld.Loader(input)
             self.createPuzzle(0)
     
     # display game board
@@ -70,8 +71,9 @@ class DotPuzzle:
         if (j1 >= 0):
             self.touchMath(ix,j1)
         if (j2 < self.n):
-            self.touchMath(ix,j2)
-        
+            self.touchMath(ix,j2)    
+
+        self.state_1d = self.get1DState() #update 1d state
         self.touchOutput(y, x)
         #debug print each touchOuput
         self.display()
@@ -87,7 +89,7 @@ class DotPuzzle:
     
     #Generates the YX ######### string and writes it to the search file
     def touchOutput(self, y, x):        
-        touchChange = str(y.upper() + str(x) + " " + str(self.getBoard()) + "\n")
+        touchChange = str(y.upper() + str(x) + " " + self.state_1d + "\n")
         file=open(self.searchFile,"a")
         file.write(touchChange)
         file.close()
@@ -119,30 +121,17 @@ class DotPuzzle:
                 self.board[i][j] = int(state1DStr[i*self.n+j])
         self.board = self.board.astype(int)
 
-    #Reads an input file
-    def readInput(self, string):
-        self.numPuzzles=0
-        #number of lines in the input file, aka. number of puzzles to be solved
-
-        self.puzzle=[]
-        file = open(string, "r")
-        for line in file: 
-            self.numPuzzles+1
-            self.puzzle.append(line)
-        file.close()
-
     #Generates puzzle based on input, must be told which puzzle to analyze  
-    def createPuzzle(self, numPuzzle):
-        puzzleStr=self.puzzle[numPuzzle-1].split()
-        #breaks up input string into a list with each 'part' as a list item
-
-        self.n = int(puzzleStr[0])
-        n=self.n
-        self.board = np.random.rand(n,n)
+    def createPuzzle(self, numPuzzle):        
+        self.n=self.puzzles.myPuzzleList[numPuzzle].n
+        self.max_d=self.puzzles.myPuzzleList[numPuzzle].max_d
+        self.max_l=self.puzzles.myPuzzleList[numPuzzle].max_l
+        self.state_1d=self.puzzles.myPuzzleList[numPuzzle].state_1d
+        self.board = np.random.rand(self.n,self.n)
         puzzlePos = 0
-        for i in range(n):
-            for j in range(n):
-                x = int(puzzleStr[3][puzzlePos])
+        for i in range(self.n):
+            for j in range(self.n):
+                x = int(self.state_1d[puzzlePos])
                 y = 0.5
                 if x >= y:
                     self.board[i][j] = 1
@@ -158,7 +147,7 @@ class DotPuzzle:
     def createSearchFile(self, numPuzzle):
         self.searchFile = str(numPuzzle)+"_dfs_search.txt"
         file=open(self.searchFile,"w")
-        file.write(str("0 " + str(self.getBoard()) + "\n"))
+        file.write(str("0 " + self.state_1d + "\n"))
         file.close()
    
 # test  
