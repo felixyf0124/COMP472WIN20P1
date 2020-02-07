@@ -3,9 +3,9 @@
 class PuzzleAdapter:
     #constructor
     def __init__(self, n, max_d, max_l, state_1d):
-        self.n = n
-        self.max_d = max_d
-        self.max_l = max_l
+        self.n = int(n)
+        self.max_d = int(max_d)
+        self.max_l = int(max_l)
         self.state_1d = state_1d
 
     def getDimension(self):
