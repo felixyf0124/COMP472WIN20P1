@@ -6,9 +6,8 @@ class DotPuzzle:
         if(isinstance(input,int)):
             self.newGame(int(input))
         else:
-            # self.readInput(str(input))
-            # self.createPuzzle(1)
-            pass
+            self.readInput(str(input))
+            self.createPuzzle(0)
     
     # display game board
     # tested
@@ -73,9 +72,9 @@ class DotPuzzle:
         if (j2 < self.n):
             self.touchMath(ix,j2)
         
-        #debug print each touchOuput, in future write to file
+        self.touchOutput(y, x)
+        #debug print each touchOuput
         self.display()
-        #self.touchOutput(x, y)
 
     #flips a dot to 1 or 0 and vice-versa 
     #for some reason, x and y need to be inverted in the def for it to work correctly
@@ -87,8 +86,8 @@ class DotPuzzle:
             self.board[x][y] = 0 
     
     #Generates the YX ######### string and writes it to the search file
-    def touchOutput(self, x, y):        
-        touchChange = str(chr(ord('@')+(y+1)) + str(x) + " " + str(self.getBoard()) + "\n")
+    def touchOutput(self, y, x):        
+        touchChange = str(y.upper() + str(x) + " " + str(self.getBoard()) + "\n")
         file=open(self.searchFile,"a")
         file.write(touchChange)
         file.close()
@@ -157,7 +156,7 @@ class DotPuzzle:
     #creates search file for current puzzle
     #in future will be made dynamic for search type
     def createSearchFile(self, numPuzzle):
-        self.searchFile = str(numPuzzle-1)+"_dfs_search.txt"
+        self.searchFile = str(numPuzzle)+"_dfs_search.txt"
         file=open(self.searchFile,"w")
         file.write(str("0 " + str(self.getBoard()) + "\n"))
         file.close()
