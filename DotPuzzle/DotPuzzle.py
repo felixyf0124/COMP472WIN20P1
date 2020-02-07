@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 class DotPuzzle:
     def __init__(self, input):
@@ -36,7 +37,7 @@ class DotPuzzle:
             out+="\n"
         print(out)  
     
-    #generate new nxn game with rand initials
+    # generate new nxn game with rand initials
     # tested
     def newGame(self,n):
         self.n = n
@@ -92,19 +93,32 @@ class DotPuzzle:
         file.write(touchChange)
         file.close()
 
-    #return current game board status in string
+    #return current game board
     # tested
     def getBoard(self):
-        boardStr = ""
+        return self.board
+
+    #return current game board status in 1D string
+    def get1DState(self):
+        stateStr = ""
         for i in range(self.n):
             for j in range(self.n):
-                boardStr += str(self.board[i][j])
-        return boardStr
+                stateStr += str(self.board[i][j])
+        return stateStr
 
-    #import from existing game status
-    def importInit(self, board):
+    #import from existing 2d game status 
+    def importBoard(self, board):
         self.board = board
         self.n = len(board)
+
+    #import from existing 1d str game status
+    def import1DState(self, state1DStr):
+        self.n = int(math.sqrt(len(state1DStr)))
+        self.board = np.zeros((self.n,self.n))
+        for i in range(self.n):
+            for j in range(self.n):
+                self.board[i][j] = int(state1DStr[i*self.n+j])
+        self.board = self.board.astype(int)
 
     #Reads an input file
     def readInput(self, string):
