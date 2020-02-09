@@ -1,7 +1,11 @@
-import DFSearch as dfs
-import DotPuzzle as dp
+import DFS as dfs
+import Loader as ld
 
-dotP = dp.DotPuzzle("../input.txt")
+# dotP = dp.DotPuzzle("../input.txt")
+loader = ld.Loader("../test.txt")
 
-search = dfs.DFSearch(3)
-search.doSearch(0, 'A')
+initSet = loader.getMyPuzzleAt(1)
+dfSearcher = dfs.DFS(initSet.getMaxDeepth(), True)
+dfSearcher.addRoot(initSet.get1DState())
+# search = dfs.DFSearch(3)
+dfSearcher.doSearch()
