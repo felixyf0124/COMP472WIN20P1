@@ -3,9 +3,9 @@ import DotPuzzle as dp
 class DFS:
     # constructor add Max depth limit
     def __init__(self, max_d):
-        self.closedList = []
+        self.closedList = [] # = search path
         self.openList = []
-        self.visited = [] # = search path
+        self.visited = [] 
         self.solution = []
         self.current_d = 0
         self.max_d = max_d
@@ -14,30 +14,64 @@ class DFS:
 
     # add initial root state also update initial step for solution
     def addRoot(self, rootState):
-        self.openList.append(rootState)
+        self.openList.append(["0", 0, rootState])
         self.solution.append(["0", 0, rootState])
         self.current_d = 1
         self.virtualDP.import1DState(rootState)
 
     def doSearch(self):
-        # TODO 
-        if(self.current_d >= self.max_d):
-            # back 1 depth up
-        # pick a dot  
-        dot = ["y", 0]
-        # try touch dot
-        self.virtualDP.touch(dot[0],dot[1])
-        nextState = self.virtualDP.get1DState()
-        if(self.isClosed(nextState)):
-            # back to last state by touching same dot
-            self.virtualDP.touch(dot[0],dot[1])
-        else:
-            self.current_d += 1
-            self.visited.append(nextState)
-            self.closedList.append(nextState)
-            self.solution.append([dot[0], dot[1], nextState])
-            if(self.isGoalState(nextState)):
-                break
+        # TODO add one more check if low level dept available state is token by the high level one
+        
+            available = self.openList[0]
+            
+            if (available[0] == "0" ):
+                self.visited = available[0]
+                nextAvailable = self.generateNextAvailableState()
+                self.closedList.append(available)
+                del self.openList[0]
+                self.openList.extend(nextAvailable)
+                for i in range(len(nextAvailable)):
+                    self.doSearch()
+                return
+            else:
+                # pick a dot  
+                dot = [available[0], available[1]]
+                # try touch dot
+                self.virtualDP.touch(dot[0],dot[1])
+                nextState = self.virtualDP.get1DState()
+                if(nextState != available[2]):
+                    raise Exception("Error: touch dot not matching the associated state")
+                if(self.isClosed(nextState)):
+                    # back to last state by touching same dot
+                    self.virtualDP.touch(dot[0],dot[1])
+                    raise Exception("Error: available state in open list should not be closed")
+                else:
+                    self.current_d += 1
+                    self.visited = available
+                    nextAvailable = self.generateNextAvailableState()
+                    self.closedList.append(available)
+                    del self.openList[0]
+                    self.openList[0:0] = nextAvailable
+                    self.solution.append([dot[0], dot[1], nextState])
+                    if(self.isGoalState(nextState)):
+                        return 
+                    elif(self.current_d >= self.max_d): # if it reached the max depth go back for deepest parallel level
+                        # back 1 depth up
+                        lastTouch = self.solution[len(self.solution)-1]
+                        self.virtualDP.touch(lastTouch[0], lastTouch[1])
+                        lastState = self.virtualDP.get1DState()
+                        del self.solution[len(self.solution)-1]
+                        self.current_d -= 1
+                        if (lastState != self.solution[len(self.solution)-1][2]):
+                            raise Exception("Error: return back to last state failed")
+                        return
+                    else: # it does not reach the max depth limit yet
+                        for i in range(len(nextAvailable)):
+                            self.doSearch() # DFS here 1 level deeper
+                            if(self.isGoalState(nextState)):
+                                return
+                        # no solution found so return back
+                        return
         
 
 
