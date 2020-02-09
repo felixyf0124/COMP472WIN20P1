@@ -113,6 +113,12 @@ class DFS:
                         if(self.isGoalState(nextState)):
                             return
                     # no solution found so return back
+                    # back 1 depth up
+                    lastTouch = self.solution[-1]
+                    self.virtualDP.touch(lastTouch[0], lastTouch[1])
+                    lastState = self.virtualDP.get1DState()
+                    del self.solution[len(self.solution)-1]
+                    self.current_d -= 1
                     return
 
     # check if the state is closed
