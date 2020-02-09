@@ -19,4 +19,16 @@ class DFS:
         self.virtualDP.import1DState(rootState)
 
     def doSearch(self):
+        # self.virtualDP.touch()
         pass
+
+    # check if the state is visited
+    def isVisited(self, stateNode):
+        isVisited = False
+        for i in range(self.visited):
+            if(stateNode == self.visited[i]):
+                isVisited = True
+                break
+        return isVisited
+
+    # def getBestBreadth(self,)

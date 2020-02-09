@@ -74,9 +74,9 @@ class DotPuzzle:
         if (j2 < self.n):
             self.touchMath(ix, j2)
 
-        self.touchOutput(y, x)
+        # self.touchOutput(y, x)
         # debug print each touchOuput
-        self.display()
+        # self.display()
 
     # flips a dot to 1 or 0 and vice-versa
     # for some reason, x and y need to be inverted in the def for it to work correctly
