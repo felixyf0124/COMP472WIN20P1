@@ -132,8 +132,7 @@ class DFS:
         # which is fixed and much less than O(n) of iterating the closed list after a while of search
         if(lastTouch[0] != "0"):
             for i in range(len(nextAvailable)):
-                if(lastTouch[0] == nextAvailable[i][0]
-                   & & lastTouch[1] == nextAvailable[i][1]):
+                if(lastTouch[0] == nextAvailable[i][0] and lastTouch[1] == nextAvailable[i][1]):
                     del nextAvailable[i]
                     break
         # del list
