@@ -1,15 +1,17 @@
 import DotPuzzle as dp
 
+
 class DFS:
     # constructor add Max depth limit
     def __init__(self, max_d):
-        self.closedList = [] # = search path
+        self.closedList = []  # = search path
         self.openList = []
-        self.visited = [] 
+        self.visited = []
         self.solution = []
         self.current_d = 0
         self.max_d = max_d
-        self.virtualDP = dp.DotPuzzle(3)  # here can be any number. after import it will be replaced
+        # here can be any number. after import it will be replaced
+        self.virtualDP = dp.DotPuzzle(3)
         self.isSolFound = False
 
     # add initial root state also update initial step for solution
@@ -21,61 +23,64 @@ class DFS:
 
     def doSearch(self):
         # TODO add one more check if low level dept available state is token by the high level one
-        
-            available = self.openList[0]
-            
-            if (available[0] == "0" ):
-                self.visited = available[0]
+
+        available = self.openList[0]
+
+        if (available[0] == "0"):
+            self.visited = available[0]
+            nextAvailable = self.generateNextAvailableState()
+            self.closedList.append(available)
+            del self.openList[0]
+            self.openList.extend(nextAvailable)
+            for i in range(len(nextAvailable)):
+                self.doSearch()
+            return
+        else:
+            # pick a dot
+            dot = [available[0], available[1]]
+            # try touch dot
+            self.virtualDP.touch(dot[0], dot[1])
+            nextState = self.virtualDP.get1DState()
+            if(nextState != available[2]):
+                raise Exception(
+                    "Error: touch dot not matching the associated state")
+            if(self.isClosed(nextState)):
+                # back to last state by touching same dot
+                self.virtualDP.touch(dot[0], dot[1])
+                raise Exception(
+                    "Error: available state in open list should not be closed")
+            else:
+                self.current_d += 1
+                self.visited = available
                 nextAvailable = self.generateNextAvailableState()
                 self.closedList.append(available)
                 del self.openList[0]
-                self.openList.extend(nextAvailable)
-                for i in range(len(nextAvailable)):
-                    self.doSearch()
-                return
-            else:
-                # pick a dot  
-                dot = [available[0], available[1]]
-                # try touch dot
-                self.virtualDP.touch(dot[0],dot[1])
-                nextState = self.virtualDP.get1DState()
-                if(nextState != available[2]):
-                    raise Exception("Error: touch dot not matching the associated state")
-                if(self.isClosed(nextState)):
-                    # back to last state by touching same dot
-                    self.virtualDP.touch(dot[0],dot[1])
-                    raise Exception("Error: available state in open list should not be closed")
-                else:
-                    self.current_d += 1
-                    self.visited = available
-                    nextAvailable = self.generateNextAvailableState()
-                    self.closedList.append(available)
-                    del self.openList[0]
-                    self.openList[0:0] = nextAvailable
-                    self.solution.append([dot[0], dot[1], nextState])
-                    if(self.isGoalState(nextState)):
-                        return 
-                    elif(self.current_d >= self.max_d): # if it reached the max depth go back for deepest parallel level
-                        # back 1 depth up
-                        lastTouch = self.solution[len(self.solution)-1]
-                        self.virtualDP.touch(lastTouch[0], lastTouch[1])
-                        lastState = self.virtualDP.get1DState()
-                        del self.solution[len(self.solution)-1]
-                        self.current_d -= 1
-                        if (lastState != self.solution[len(self.solution)-1][2]):
-                            raise Exception("Error: return back to last state failed")
-                        return
-                    else: # it does not reach the max depth limit yet
-                        for i in range(len(nextAvailable)):
-                            self.doSearch() # DFS here 1 level deeper
-                            if(self.isGoalState(nextState)):
-                                return
-                        # no solution found so return back
-                        return
-        
-
+                self.openList[0:0] = nextAvailable
+                self.solution.append([dot[0], dot[1], nextState])
+                if(self.isGoalState(nextState)):
+                    return
+                # if it reached the max depth go back for deepest parallel level
+                elif(self.current_d >= self.max_d):
+                    # back 1 depth up
+                    lastTouch = self.solution[len(self.solution)-1]
+                    self.virtualDP.touch(lastTouch[0], lastTouch[1])
+                    lastState = self.virtualDP.get1DState()
+                    del self.solution[len(self.solution)-1]
+                    self.current_d -= 1
+                    if (lastState != self.solution[len(self.solution)-1][2]):
+                        raise Exception(
+                            "Error: return back to last state failed")
+                    return
+                else:  # it does not reach the max depth limit yet
+                    for i in range(len(nextAvailable)):
+                        self.doSearch()  # DFS here 1 level deeper
+                        if(self.isGoalState(nextState)):
+                            return
+                    # no solution found so return back
+                    return
 
     # check if the state is closed
+
     def isClosed(self, stateNode):
         isClosed = False
         for i in range(self.closedList):
@@ -84,11 +89,11 @@ class DFS:
                 break
         return isClosed
 
-    # check if state is a goal state 
+    # check if state is a goal state
     # and update isSolFound as True
     # and return bool
-    def isGoalState(self,state):
-        goalState = state.replace("1","0")
+    def isGoalState(self, state):
+        goalState = state.replace("1", "0")
         if(state == goalState):
             self.isSolFound = True
             return True
@@ -111,11 +116,13 @@ class DFS:
         for j in range(puzzleM.n):
             for i in range(puzzleM.n):
                 dot = [alpha[j], i]
-                puzzleM.touch(dot[0],dot[1]) # touch it so we can get the next state
-                state1D = pupuzzleM.get1DState() 
-                available = [dot[0],dot[1],state1D]
-                nextAvailable.append(available) # add to nextAvailable list
-                puzzleM.touch(dot[0],dot[1]) # touch it again so it go back to the last state (parent)
+                # touch it so we can get the next state
+                puzzleM.touch(dot[0], dot[1])
+                state1D = pupuzzleM.get1DState()
+                available = [dot[0], dot[1], state1D]
+                nextAvailable.append(available)  # add to nextAvailable list
+                # touch it again so it go back to the last state (parent)
+                puzzleM.touch(dot[0], dot[1])
 
         # so far we got all same level states with dot positions to touch
         # we have to filter what is not available in the list
@@ -126,7 +133,7 @@ class DFS:
         if(lastTouch[0] != "0"):
             for i in range(len(nextAvailable)):
                 if(lastTouch[0] == nextAvailable[i][0]
-                && lastTouch[1] == nextAvailable[i][1]):
+                   & & lastTouch[1] == nextAvailable[i][1]):
                     del nextAvailable[i]
                     break
         # del list
@@ -134,12 +141,9 @@ class DFS:
         for i in range(len(nextAvailable)):
             if(self.isClosed(nextAvailable[i][2])):
                 unavailableIndex.append(i)
-        
+
         # del from the last to the first so we won't be bothered by the changed subsequence
         for i in sorted(unavailableIndex, reverse=True):
             del nextAvailable[i]
-            
+
         return nextAvailable
-
-
-
