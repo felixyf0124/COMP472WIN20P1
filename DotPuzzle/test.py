@@ -1,4 +1,4 @@
-import DotPuzzle as dp
+import dotpuzzle as dp
 import Loader as ld
 # import PuzzleAdapter as PA
 
