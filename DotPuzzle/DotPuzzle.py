@@ -6,7 +6,10 @@ import Loader as ld
 class DotPuzzle:
     def __init__(self, input):
         if(isinstance(input, int)):
-            self.newGame(int(input))
+            if(int(input)>=3 and int(input)<=10):
+                self.newGame(int(input))
+            else:
+                raise Exception("Error: invalid board size")
         else:
             self.puzzles = ld.Loader(input)
             self.createPuzzle(0)
