@@ -29,7 +29,7 @@ In this project, you will implement and analyse a heuristic search.
 https://github.com/felixyf0124/COMP472WIN20P1
 
 ## how to compile
-cd to /DotPuzzle
+cd /DotPuzzle
 cmd `py main.py`
 
 #### the output file is under `./DotPuzzle/`
