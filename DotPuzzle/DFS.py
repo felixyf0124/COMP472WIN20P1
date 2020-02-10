@@ -55,38 +55,24 @@ class DFS:
             self.openList.extend(nextAvailable)
             for i in range(len(nextAvailable)):
                 self.doSearch()
+                if(self.isSolFound):
+                    return
             return
         else:
             # pick a dot
             dot = [available[0], available[1]]
-            if(self.debug):
-                print("self.virtualDP.get1DState()")
-                print(self.virtualDP.get1DState())
             # try touch dot
-            if(self.debug):
-                self.virtualDP.display()
             self.virtualDP.touch(dot[0], dot[1])
-            if(self.debug):
-                print("AVAILABLE")
-                print(available)
-                self.virtualDP.display()
-                checkerAva = dp.DotPuzzle(3)
-                checkerAva.import1DState(available[2])
-                checkerAva.display()
             nextState = self.virtualDP.get1DState()
             if(self.isClosed(nextState)):  # the same state might be token by parallel's children
                 # back to last state by touching same dot
                 self.virtualDP.touch(dot[0], dot[1])
                 return
             elif(nextState != available[2]):
-                if(self.debug):
-                    print(nextState)
-                    print("!=")
-                    print(available[2])
                 self.virtualDP.touch(dot[0], dot[1])
                 return
-                raise Exception(
-                    "Error: touch dot not matching the associated state")
+                # raise Exception(
+                #     "Error: touch dot not matching the associated state")
             else:
                 self.current_d += 1
                 self.visited = available
@@ -114,7 +100,7 @@ class DFS:
                     self.openList[0:0] = nextAvailable
                     for i in range(len(nextAvailable)):
                         self.doSearch()  # DFS here 1 level deeper
-                        if(self.isGoalState(nextState)):
+                        if(self.isSolFound):
                             return
                     # no solution found so return back
                     # back 1 depth up
