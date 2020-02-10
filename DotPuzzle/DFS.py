@@ -26,9 +26,7 @@ class DFS:
     def doSearch(self):
         # TODO add one more check if low level dept available state is token by the high level one
         self.counter += 1
-        if(self.counter % 10000 == 0):
-            print("SOLUTION")
-            print(self.solution)
+        
         if(self.debug):
             print("======================================")
             print("CURRENT DEPTH")
@@ -79,7 +77,9 @@ class DFS:
                 self.closedList.append(available)
                 del self.openList[0]
                 self.solution.append([dot[0], dot[1], nextState])
-
+                if(self.counter % 10000 == 0):
+                    print("SOLUTION")
+                    print(self.solution)
                 if(self.isGoalState(nextState)):
                     return
                 # if it reached the max depth go back for deepest parallel level
