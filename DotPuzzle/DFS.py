@@ -188,11 +188,22 @@ class DFS:
     # return null if not found
     # else return final solution
     def getFinalSolution(self):
+        solution = "No Solution"
         if(self.isSolFound):
-            return self.solution
-        else:
-            return "No Solution"
+            solution = ""
+            for i in range(len(self.solution)):
+                if(self.solution[i][0] == "0"):
+                    solution += self.solution[i][0]
+                else:
+                    solution += self.solution[i][0] + str(self.solution[i][1])
+                solution += " " + self.solution[i][2] + "\n"
+       
+        return solution
 
     # return search path
     def getSearchPath(self):
-        return self.closedList
+        searchPath = ""
+        for i in range(len(self.closedList)):
+            searchPath += "0 0 0 " + self.closedList[i][2] + "\n"
+            
+        return searchPath

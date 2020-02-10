@@ -22,4 +22,5 @@ import SolutionWriter as wr
 #     dotP.display()
 
 writer = wr.SolutionWriter(0, "dfs")
-writer.createSearchSolutionFile("search", "BBB")
+writer.createSearchSolutionFile("solution", "THIS IS THE CONTENT")
+writer.createSearchSolutionFile("search", "THIS IS THE SEARCH")
