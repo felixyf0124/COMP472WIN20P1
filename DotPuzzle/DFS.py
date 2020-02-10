@@ -185,7 +185,6 @@ class DFS:
 
         return nextAvailable
 
-    # TODO
     # return null if not found
     # else return final solution
     def getFinalSolution(self):
@@ -193,3 +192,7 @@ class DFS:
             return self.solution
         else:
             return "No Solution"
+
+    # return search path
+    def getSearchPath(self):
+        return self.closedList;
