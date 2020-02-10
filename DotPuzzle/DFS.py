@@ -195,4 +195,4 @@ class DFS:
 
     # return search path
     def getSearchPath(self):
-        return self.closedList;
+        return self.closedList

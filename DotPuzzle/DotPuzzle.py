@@ -6,7 +6,7 @@ import Loader as ld
 class DotPuzzle:
     def __init__(self, input):
         if(isinstance(input, int)):
-            if(int(input)>=3 and int(input)<=10):
+            if(int(input) >= 3 and int(input) <= 10):
                 self.newGame(int(input))
             else:
                 raise Exception("Error: invalid board size")
@@ -77,7 +77,7 @@ class DotPuzzle:
         if (j2 < self.n):
             self.touchMath(ix, j2)
 
-        # self.touchOutput(y, x)
+        self.touchOutput(y, x)
         # debug print each touchOuput
         # self.display()
 
