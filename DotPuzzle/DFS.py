@@ -14,6 +14,7 @@ class DFS:
         # here can be any number. after import it will be replaced
         self.virtualDP = dp.DotPuzzle(3)
         self.isSolFound = False
+        self.counter = 0
 
     # add initial root state also update initial step for solution
     def addRoot(self, rootState):
@@ -24,6 +25,10 @@ class DFS:
 
     def doSearch(self):
         # TODO add one more check if low level dept available state is token by the high level one
+        self.counter += 1
+        if(self.counter % 10000 == 0):
+            print("SOLUTION")
+            print(self.solution)
         if(self.debug):
             print("======================================")
             print("CURRENT DEPTH")
@@ -93,8 +98,7 @@ class DFS:
                     return
                 # if it reached the max depth go back for deepest parallel level
                 elif(self.current_d >= self.max_d):
-                    if self.debug:
-                        print("at highest depth level -------------------")
+
                     # back 1 depth up
                     lastTouch = self.solution[-1]
                     self.virtualDP.touch(lastTouch[0], lastTouch[1])
@@ -141,11 +145,6 @@ class DFS:
             return True
         else:
             return False
-
-    # go back to parent state of current state
-    # def backToParentState(self):
-    #     lastTouch = self.solution[len(self.solution)-1]
-    #     self.virtualDP.touch(lastTouch[0])
 
     # return next available state with associated dot in the same depth level
     # TODO option: make a parent class and move this to parent class?
@@ -199,3 +198,12 @@ class DFS:
             print(nextAvailable)
 
         return nextAvailable
+
+    # TODO
+    # return null if not found
+    # else return final solution
+    def getFinalSolution(self):
+        if(self.isSolFound):
+            return self.solution
+        else:
+            return "No Solution"
