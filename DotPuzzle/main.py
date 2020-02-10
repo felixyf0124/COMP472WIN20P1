@@ -1,6 +1,5 @@
 import DFS as dfs
 import Loader as ld
-import Output as op
 
 # dotP = dp.DotPuzzle("../input.txt")
 loader = ld.Loader("../test.txt")
