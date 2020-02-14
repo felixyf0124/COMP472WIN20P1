@@ -5,7 +5,7 @@ import SolutionWriter as wr
 # loads the test.txt input file.
 loader = ld.Loader("../test.txt")
 # loads puzzle #1
-initSet = loader.getMyPuzzleAt(1)
+initSet = loader.getMyPuzzleAt(0)
 dfSearcher = dfs.DFS(initSet.getMaxDeepth(), False)
 dfSearcher.addRoot(initSet.get1DState())
 # runs search using DFS method

@@ -74,7 +74,8 @@ class DFS:
             else:
                 self.current_d += 1
                 self.visited = available
-                self.closedList.append(available)
+                if(self.isClosed(available[2])):
+                    self.closedList.append(available)
                 del self.openList[0]
                 self.solution.append([dot[0], dot[1], nextState])
                 if(self.counter % 10000 == 0):
