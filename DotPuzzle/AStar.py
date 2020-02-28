@@ -133,7 +133,7 @@ class AStar:
                 puzzleM.touch(dot[0], dot[1])
                 state1D = puzzleM.get1DState()
                 hn = self.getHeuristic(state1D)
-                gn = self.visited[3] + 1
+                gn = self.visited[5] + 1
                 fn = hn + gn
                 PathToRoot = self.visited[6] + [[dot[0], dot[1], state1D, fn, hn, gn]]
                 # PathToRoot[0:0] = 
