@@ -38,30 +38,54 @@ import time
 loader = ld.Loader("test.txt")
 
 # get solution for dfs
+for i in range(loader.getMyPuzzleSize()):
+    # calculate the time
+    start = time.time()
+    # loads puzzle #1
+    initSet = loader.getMyPuzzleAt(i)
+    dfSearcher = dfs.DFS(initSet.getMaxDeepth(), False)
+    dfSearcher.addRoot(initSet.get1DState())
+    # runs search using DFS method
+    dfSearcher.doSearch()
+    print("FINAL SOLUTION")
+    print(dfSearcher.solution)
+    print("SOL FOUND?")
+    print(dfSearcher.isSolFound)
+    solution = dfSearcher.getFinalSolution()
+    search = dfSearcher.getSearchPath()
+    print(solution)
+    # prints output
+    writer = wr.SolutionWriter(i, "dfs")
+    writer.createSearchSolutionFile("solution", solution)
+    writer.createSearchSolutionFile("search", search)
+    end = time.time()
+    print(end - start)
+
+# get solution for dfs
 # for i in range(loader.getMyPuzzleSize()):
-i =1
-# calculate the time
-start = time.time()
-# loads puzzle #1
-initSet = loader.getMyPuzzleAt(i)
-asSearcher = ass.AStar(initSet.getMaxSearchPathLength(), False)
-asSearcher.addRoot(initSet.get1DState())
-# runs search using DFS method
-asSearcher.doSearch()
-print("FINAL SOLUTION")
-print(asSearcher.solution)
-print("SOL FOUND?")
-print(asSearcher.isSolFound)
-solution = asSearcher.getFinalSolution()
-search = asSearcher.getSearchPath()
-print(solution)
-# prints output
-writer = wr.SolutionWriter(i, "astar")
-writer.createSearchSolutionFile("solution", solution)
-writer.createSearchSolutionFile("search", search)
-end = time.time()
-print(end - start)
+# i =1
+# # calculate the time
+# start = time.time()
+# # loads puzzle #1
+# initSet = loader.getMyPuzzleAt(i)
+# asSearcher = ass.AStar(initSet.getMaxSearchPathLength(), False)
+# asSearcher.addRoot(initSet.get1DState())
+# # runs search using DFS method
+# asSearcher.doSearch()
+# print("FINAL SOLUTION")
+# print(asSearcher.solution)
+# print("SOL FOUND?")
+# print(asSearcher.isSolFound)
+# solution = asSearcher.getFinalSolution()
+# search = asSearcher.getSearchPath()
+# print(solution)
+# # prints output
+# writer = wr.SolutionWriter(i, "astar")
+# writer.createSearchSolutionFile("solution", solution)
+# writer.createSearchSolutionFile("search", search)
+# end = time.time()
+# print(end - start)
 
 
-a = [0,1,2,3,4]
-print(a[:-1])
+# a = [0,1,2,3,4]
+# print(a[:-1])

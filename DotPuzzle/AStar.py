@@ -101,9 +101,7 @@ class AStar:
     # check if the state is closed
 
     def isClosed(self, stateNode):
-        # print("here")
         isClosed =  (stateNode) in self.closedList
-        # print(isClosed)
         return isClosed
 
     # check if state is a goal state

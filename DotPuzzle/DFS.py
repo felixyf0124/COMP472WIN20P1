@@ -4,7 +4,8 @@ import DotPuzzle as dp
 class DFS:
     # constructor add Max depth limit
     def __init__(self, max_d, debug):
-        self.closedList = []  # = search path
+        self.sPath = [] # search path
+        self.closedList = set()
         self.openList = []
         self.visited = []
         self.solution = []
@@ -24,29 +25,17 @@ class DFS:
         self.virtualDP.import1DState(rootState)
 
     def doSearch(self):
-        # TODO add one more check if low level dept available state is token by the high level one
         self.counter += 1
-        
-        if(self.debug):
-            print("======================================")
-            print("CURRENT DEPTH")
-            print(self.current_d)
-            print("CURRENT GAME STATE")
-            print(self.virtualDP.get1DState())
-            print("VISITED")
-            print(self.visited)
-            print("OPEN LIST")
-            print(self.openList)
-            print("CLOSED LIST")
-            print(self.closedList)
-            print("SOLUTION")
-            print(self.solution)
 
         available = self.openList[0]
 
         if (available[0] == "0"):
             self.visited = available[0]
-            self.closedList.append(available)
+            if(not self.isClosed(available[2])):
+                    # search path add
+                    self.sPath.append(available)
+                    # set add
+                    self.closedList.add((available[2]))
             del self.openList[0]
             nextAvailable = self.generateNextAvailableState()
 
@@ -66,22 +55,28 @@ class DFS:
                 # back to last state by touching same dot
                 self.virtualDP.touch(dot[0], dot[1])
                 return
-            elif(nextState != available[2]):
-                self.virtualDP.touch(dot[0], dot[1])
-                return
+            # elif(nextState != available[2]):
+            #     self.virtualDP.touch(dot[0], dot[1])
+            #     return
                 # raise Exception(
                 #     "Error: touch dot not matching the associated state")
             else:
                 self.current_d += 1
                 self.visited = available
-                if(self.isClosed(available[2])):
-                    self.closedList.append(available)
+                if(not self.isClosed(available[2])):
+                    # search path add
+                    self.sPath.append(available)
+                    # set add
+                    self.closedList.add((available[2]))
                 del self.openList[0]
                 self.solution.append([dot[0], dot[1], nextState])
-                if(self.counter % 10000 == 0):
+                
+                # print("SOLUTION")
+                # print(self.solution)
+
+                if(self.isGoalState(nextState)):
                     print("SOLUTION")
                     print(self.solution)
-                if(self.isGoalState(nextState)):
                     return
                 # if it reached the max depth go back for deepest parallel level
                 elif(self.current_d >= self.max_d):
@@ -115,11 +110,7 @@ class DFS:
     # check if the state is closed
 
     def isClosed(self, stateNode):
-        isClosed = False
-        for i in range(len(self.closedList)):
-            if(stateNode == self.closedList[i]):
-                isClosed = True
-                break
+        isClosed =  (stateNode) in self.closedList
         return isClosed
 
     # check if state is a goal state
@@ -136,8 +127,7 @@ class DFS:
     # return next available state with associated dot in the same depth level
     # TODO option: make a parent class and move this to parent class?
     def generateNextAvailableState(self):
-        if(self.debug):
-            print("====================================generateNextAvailableState")
+        
         lastTouch = self.solution[-1]
         nextAvailable = []
         puzzleM = dp.DotPuzzle(3)
@@ -160,12 +150,7 @@ class DFS:
         # because touching the same dot will go back to its last state (grand parent)
         # benefit of filtering this is because its max O(n) is n x n, size of the board
         # which is fixed and much less than O(n) of iterating the closed list after a while of search
-        if(self.debug):
-            print("-------------------------------------------------------")
-            print(lastTouch)
-            print(nextAvailable)
-            print("-------------------------------------------------------")
-
+        
         if(lastTouch[0] != "0"):
             for i in range(len(nextAvailable)):
                 if(lastTouch[0] == nextAvailable[i][0] and lastTouch[1] == nextAvailable[i][1]):
@@ -180,9 +165,6 @@ class DFS:
         # del from the last to the first so we won't be bothered by the changed subsequence
         for i in sorted(unavailableIndex, reverse=True):
             del nextAvailable[i]
-        if(self.debug):
-            print("next available")
-            print(nextAvailable)
 
         return nextAvailable
 
@@ -204,7 +186,7 @@ class DFS:
     # return search path
     def getSearchPath(self):
         searchPath = ""
-        for i in range(len(self.closedList)):
-            searchPath += "0 0 0 " + self.closedList[i][2] + "\n"
+        for i in range(len(self.sPath)):
+            searchPath += "0 0 0 " + self.sPath[i][2] + "\n"
             
         return searchPath
