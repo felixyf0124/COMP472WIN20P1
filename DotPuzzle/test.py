@@ -21,6 +21,11 @@ import SolutionWriter as wr
 #     dotP.import1DState(loader.getMyPuzzleAt(i).get1DState())
 #     dotP.display()
 
-writer = wr.SolutionWriter(0, "dfs")
-writer.createSearchSolutionFile("solution", "THIS IS THE CONTENT")
-writer.createSearchSolutionFile("search", "THIS IS THE SEARCH")
+# writer = wr.SolutionWriter(0, "dfs")
+# writer.createSearchSolutionFile("solution", "THIS IS THE CONTENT")
+# writer.createSearchSolutionFile("search", "THIS IS THE SEARCH")
+
+# a = set()
+# a.add((1,2,3))
+# b = (1,2,4) in a
+# print(b)
