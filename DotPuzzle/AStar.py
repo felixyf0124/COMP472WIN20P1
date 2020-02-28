@@ -10,7 +10,7 @@ class AStar:
         self.openList = []
         self.visited = []
         self.solution = []
-        # self.current_d = 0
+        self.current_d = 0
         self.max_l = max_l
         self.heuristicType = 1
         self.debug = debug
@@ -21,9 +21,12 @@ class AStar:
 
     # add initial root state also update initial step for solution
     def addRoot(self, rootState):
-        self.openList.append(["0", 0, rootState])
+        self.current_d = 1
+        hn = self.getHeuristic(rootState)
+        gn = self.current_d - 1
+        fn = hn + gn
+        self.openList.append(["0", 0, rootState, fn, hn, gn])
         self.solution.append(["0", 0, rootState])
-        # self.current_d = 1
         self.virtualDP.import1DState(rootState)
 
     def doSearch(self):
@@ -49,12 +52,17 @@ class AStar:
 
         if (available[0] == "0"):
             self.visited = available[0]
-            # set add
-            self.closedList.add(())
+            if((available[0]) not in self.closedList):
+                # search path add
+                self.sPath.append(available)
+                # set add
+                self.closedList.add((available[0]))
             del self.openList[0]
             nextAvailable = self.generateNextAvailableState()
 
             self.openList.extend(nextAvailable)
+            # TODO sort
+
             for i in range(len(nextAvailable)):
                 self.doSearch()
                 if(self.isSolFound):
@@ -149,7 +157,10 @@ class AStar:
                 # touch it so we can get the next state
                 puzzleM.touch(dot[0], dot[1])
                 state1D = puzzleM.get1DState()
-                available = [dot[0], dot[1], state1D]
+                hn = self.getHeuristic(state1d)
+                gn = self.current_d
+                fn = hn + gn
+                available = [dot[0], dot[1], state1D, fn, hn, gn]
                 nextAvailable.append(available)  # add to nextAvailable list
                 # touch it again so it go back to the last state (parent)
                 puzzleM.touch(dot[0], dot[1])
@@ -199,6 +210,15 @@ class AStar:
             if(state[i] == "1"):
                 hn += 1
         return hn
+
+    # get 3rd element
+    def get3rd(self, elem):
+        return elem[3]
+
+    # sort openlist based on the 3rd elemt (fn)
+    def sortOpenList(self):
+        self.openList.sort(key=self.get3rd)
+
 
     # return null if not found
     # else return final solution
