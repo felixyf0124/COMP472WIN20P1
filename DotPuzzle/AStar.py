@@ -26,34 +26,16 @@ class AStar:
         hn = self.getHeuristic(rootState)
         gn = 0
         fn = hn + gn
-        self.openList.append(["0", 0, rootState, fn, hn, gn, []])
-        # self.solution.append(["0", 0, rootState, fn, hn, gn])
+        root = ["0", 0, rootState, fn, hn, gn, [["0", 0, rootState, fn, hn, gn]]]
+        self.openList.append(root)
         self.virtualDP.import1DState(rootState)
 
     def doSearch(self):
-        # TODO add one more check if low level dept available state is token by the high level one
         self.counter += 1
         
-        if(self.debug):
-            print("======================================")
-            # print("CURRENT DEPTH")
-            # print(self.current_d)
-            print("CURRENT GAME STATE")
-            print(self.virtualDP.get1DState())
-            # print("VISITED")
-            # print(self.visited)
-            # print("OPEN LIST")
-            # print(self.openList)
-            print("CLOSED LIST")
-            print(self.closedList)
-            print("SOLUTION")
-            print(self.solution)
-
         # sort by fn
         self.sortOpenList()
-        if(self.debug):
-            print("open list")
-            print(self.openList)
+       
         available = self.openList[0]
 
         if (available[0] == "0"):
@@ -63,38 +45,24 @@ class AStar:
                 self.sPath.append(available)
                 # set add
                 self.closedList.add((available[2]))
-                if(self.debug):
-                        print("here")
-                        print(self.closedList)
+                
             del self.openList[0]
             nextAvailable = self.generateNextAvailableState()
 
             self.openList.extend(nextAvailable)
-            # sort by fn
-            # self.sortOpenList()
             
             self.doSearch()
             if(self.isSolFound):
                 return
             return
         else:
-            # pick a dot
-            dot = [available[0], available[1]]
-            # try touch dot
-            # self.virtualDP.import1DState(self.visited[2])
-            # self.virtualDP.touch(dot[0], dot[1])
-            # nextState = self.virtualDP.get1DState()
+            
             if(self.isClosed(available[2])):  # the same state might be token by parallel's children
                 del self.openList[0]
                 self.doSearch()
                 return
-            # elif(nextState != available[2]):
-            #     self.virtualDP.touch(dot[0], dot[1])
-            #     # return
-            #     raise Exception(
-            #         "Error: touch dot not matching the associated state")
+            
             else:
-                # self.current_d += 1
                 self.visited = available
                 if(not self.isClosed(available[2])):
                     # search path add
@@ -106,15 +74,13 @@ class AStar:
                     for i in range(len(self.solution)-available[5]):
                         del self.solution[len(self.solution)-1]
 
-                # self.solution.append([dot[0], dot[1], available[2],
-                #     available[3],available[4],available[5]])
-                
-                print("visited")
-                print(self.visited)
+                # print("visited")
+                # print(self.visited)
                 if(self.isGoalState(available[2])):
                     self.finalState = available
                     print("final")
                     print(self.finalState)
+                    self.solution = self.finalState[-1]
                     return
                 # if it reached the max length end
                 elif(len(self.sPath) >= self.max_l):
@@ -169,7 +135,7 @@ class AStar:
                 hn = self.getHeuristic(state1D)
                 gn = self.visited[3] + 1
                 fn = hn + gn
-                PathToRoot = self.visited[6] + [self.visited[:-1]]
+                PathToRoot = self.visited[6] + [[dot[0], dot[1], state1D, fn, hn, gn]]
                 # PathToRoot[0:0] = 
                 available = [dot[0], dot[1], state1D, fn, hn, gn, PathToRoot]
                 nextAvailable.append(available)  # add to nextAvailable list
@@ -244,7 +210,10 @@ class AStar:
     # return search path
     def getSearchPath(self):
         searchPath = ""
-        for i in range(len(self.closedList)):
-            searchPath += "0 0 0 " + self.sPath[i][2] + "\n"
+        for i in range(len(self.sPath)):
+            searchPath += str(self.sPath[i][3]) + " "
+            searchPath += str(self.sPath[i][4]) + " "
+            searchPath += str(self.sPath[i][5]) + " "
+            searchPath += self.sPath[i][2] + "\n"
             
         return searchPath
