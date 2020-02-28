@@ -10,7 +10,7 @@ class AStar:
         self.openList = []
         self.visited = []
         self.solution = []
-        self.current_d = 0
+        # self.current_d = 0
         self.max_l = max_l
         self.heuristicType = 1
         self.debug = debug
@@ -21,9 +21,9 @@ class AStar:
 
     # add initial root state also update initial step for solution
     def addRoot(self, rootState):
-        self.current_d = 1
+        # self.current_d = 1
         hn = self.getHeuristic(rootState)
-        gn = self.current_d - 1
+        gn = 0
         fn = hn + gn
         self.openList.append(["0", 0, rootState, fn, hn, gn])
         self.solution.append(["0", 0, rootState])
@@ -48,11 +48,14 @@ class AStar:
             print("SOLUTION")
             print(self.solution)
 
+        # sort by fn
+        self.sortOpenList()
+
         available = self.openList[0]
 
         if (available[0] == "0"):
-            self.visited = available[0]
-            if((available[0]) not in self.closedList):
+            self.visited = available
+            if(self.isClosed(available[2])):
                 # search path add
                 self.sPath.append(available)
                 # set add
@@ -61,12 +64,11 @@ class AStar:
             nextAvailable = self.generateNextAvailableState()
 
             self.openList.extend(nextAvailable)
-            # TODO sort
-
-            for i in range(len(nextAvailable)):
-                self.doSearch()
-                if(self.isSolFound):
-                    return
+            # sort by fn
+            self.sortOpenList()
+            self.doSearch()
+            if(self.isSolFound):
+                return
             return
         else:
             # pick a dot
@@ -87,7 +89,10 @@ class AStar:
                 # self.current_d += 1
                 self.visited = available
                 if(self.isClosed(available[2])):
-                    self.closedList.append(available)
+                    # search path add
+                    self.sPath.append(available)
+                    # set add
+                    self.closedList.add((available[0]))
                 del self.openList[0]
                 self.solution.append([dot[0], dot[1], nextState])
                 if(self.counter % 10000 == 0):
@@ -96,32 +101,19 @@ class AStar:
                 if(self.isGoalState(nextState)):
                     return
                 # if it reached the max depth go back for deepest parallel level
-                elif(self.current_d >= self.max_d):
+                elif(len(self.sPath) >= self.max_l):
 
-                    # back 1 depth up
-                    lastTouch = self.solution[-1]
-                    self.virtualDP.touch(lastTouch[0], lastTouch[1])
-                    lastState = self.virtualDP.get1DState()
-                    del self.solution[len(self.solution)-1]
-                    # self.current_d -= 1
-                    if (lastState != self.solution[len(self.solution)-1][2]):
-                        raise Exception(
-                            "Error: return back to last state failed")
+                    # no solution
                     return
-                else:  # it does not reach the max depth limit yet
+                else:  # it does not reach the max length limit yet
                     nextAvailable = self.generateNextAvailableState()
                     self.openList[0:0] = nextAvailable
-                    for i in range(len(nextAvailable)):
-                        self.doSearch()  # DFS here 1 level deeper
-                        if(self.isSolFound):
-                            return
-                    # no solution found so return back
-                    # back 1 depth up
-                    lastTouch = self.solution[-1]
-                    self.virtualDP.touch(lastTouch[0], lastTouch[1])
-                    lastState = self.virtualDP.get1DState()
-                    del self.solution[len(self.solution)-1]
-                    # self.current_d -= 1
+                    # sort by fn
+                    self.sortOpenList()
+                    self.doSearch()  
+                    if(self.isSolFound):
+                       return
+                    
                     return
 
     # check if the state is closed
@@ -157,8 +149,8 @@ class AStar:
                 # touch it so we can get the next state
                 puzzleM.touch(dot[0], dot[1])
                 state1D = puzzleM.get1DState()
-                hn = self.getHeuristic(state1d)
-                gn = self.current_d
+                hn = self.getHeuristic(state1D)
+                gn = self.visited[3] + 1
                 fn = hn + gn
                 available = [dot[0], dot[1], state1D, fn, hn, gn]
                 nextAvailable.append(available)  # add to nextAvailable list
