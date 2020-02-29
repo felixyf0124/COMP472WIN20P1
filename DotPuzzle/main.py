@@ -1,4 +1,6 @@
-import BFS as bfs
+# import BFS as bfs
+import BestFirst as bfs
+import AStar as ass
 import DFS as dfs
 import Loader as ld
 import SolutionWriter as wr
@@ -31,13 +33,13 @@ loader = ld.Loader("test.txt")
 #     end = time.time()
 #     print(end - start, "second(s)")
 
-# get solution for bfs
+# get solution for Best-First search
 for i in range(loader.getMyPuzzleSize()):
     # calculate the time
     start = time.time()
     # loads puzzle #1
     initSet = loader.getMyPuzzleAt(i)
-    bfSearcher = bfs.BFS(initSet.getMaxSearchPathLength(), False)
+    bfSearcher = bfs.BestFirst(initSet.getMaxSearchPathLength(), False)
     # bfSearcher = bfs.BFS(4, True)
     bfSearcher.addRoot(initSet.get1DState())
     # runs search using DFS method
@@ -55,3 +57,28 @@ for i in range(loader.getMyPuzzleSize()):
     writer.createSearchSolutionFile("search", search)
     end = time.time()
     print(end - start, "second(s)")
+
+# get solution for A* search
+for i in range(loader.getMyPuzzleSize()):
+# i =1
+    # calculate the time
+    start = time.time()
+    # loads puzzle #1
+    initSet = loader.getMyPuzzleAt(i)
+    asSearcher = ass.AStar(initSet.getMaxSearchPathLength(), False)
+    asSearcher.addRoot(initSet.get1DState())
+    # runs search using DFS method
+    asSearcher.doSearch()
+    print("FINAL SOLUTION")
+    print(asSearcher.solution)
+    print("SOL FOUND?")
+    print(asSearcher.isSolFound)
+    solution = asSearcher.getFinalSolution()
+    search = asSearcher.getSearchPath()
+    print(solution)
+    # prints output
+    writer = wr.SolutionWriter(i, "astar")
+    writer.createSearchSolutionFile("solution", solution)
+    writer.createSearchSolutionFile("search", search)
+    end = time.time()
+    print(end - start)

@@ -3,3 +3,4 @@
 DotPuzzle/__pycache__/*
 .idea/*
 *.pyc
+DotPuzzle/*.txt
