@@ -33,6 +33,7 @@ for i in range(loader.getMyPuzzleSize()):
     writer.createSearchSolutionFile("search", search)
     end = time.time()
     print(end - start, "second(s)")
+    print("----------------------------")
 
 # get solution for Best-First search
 for i in range(loader.getMyPuzzleSize()):
@@ -58,6 +59,7 @@ for i in range(loader.getMyPuzzleSize()):
     writer.createSearchSolutionFile("search", search)
     end = time.time()
     print(end - start, "second(s)")
+    print("----------------------------")
 
 # get solution for A* search
 for i in range(loader.getMyPuzzleSize()):
@@ -83,3 +85,4 @@ for i in range(loader.getMyPuzzleSize()):
     writer.createSearchSolutionFile("search", search)
     end = time.time()
     print(end - start)
+    print("----------------------------")
