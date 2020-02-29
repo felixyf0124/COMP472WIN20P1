@@ -4,13 +4,13 @@ import numpy as np
 
 class BFS:
     # constructor add Max depth limit
-    def __init__(self, max_d, debug):
+    def __init__(self, max_l, debug):
         self.closedList = []  # = search path
         self.openList = []
         self.visited = []
         self.solution = []
         self.current_d = 0
-        self.max_d = max_d
+        self.max_l = max_l
         self.debug = debug
         # here can be any number. after import it will be replaced
         self.virtualDP = dp.DotPuzzle(3)
@@ -89,17 +89,18 @@ class BFS:
                 if(self.isGoalState(nextState)):
                     return
                 # if it reached the max depth go back for deepest parallel level
-                elif(self.current_d >= self.max_d):
-
+                # elif(self.current_d >= self.max_d):
                     # back 1 depth up
-                    lastTouch = self.solution[-1]
-                    self.virtualDP.touch(lastTouch[0], lastTouch[1])
-                    lastState = self.virtualDP.get1DState()
-                    del self.solution[len(self.solution)-1]
-                    self.current_d -= 1
-                    if (lastState != self.solution[len(self.solution)-1][2]):
-                        raise Exception(
-                            "Error: return back to last state failed")
+                    # lastTouch = self.solution[-1]
+                    # self.virtualDP.touch(lastTouch[0], lastTouch[1])
+                    # lastState = self.virtualDP.get1DState()
+                    # del self.solution[len(self.solution)-1]
+                    # self.current_d -= 1
+                    # if (lastState != self.solution[len(self.solution)-1][2]):
+                    #     raise Exception(
+                    #         "Error: return back to last state failed")
+                    # return
+                elif(len(self.solution) >= self.max_l):
                     return
                 else:  # it does not reach the max depth limit yet
                     nextAvailable = self.generateNextAvailableState()
@@ -118,7 +119,6 @@ class BFS:
                     return
 
     # check if the state is closed
-
     def isClosed(self, stateNode):
         isClosed = False
         for i in range(len(self.closedList)):
@@ -158,7 +158,7 @@ class BFS:
                              self.getHeuristics(state1D)]
                 nextAvailable.append(available)  # add to nextAvailable list
                 nextAvailable = sorted(
-                    nextAvailable, key=lambda x: x[-1], reverse=True)
+                    nextAvailable, key=lambda x: x[-1])
                 # touch it again so it go back to the last state (parent)
                 puzzleM.touch(dot[0], dot[1])
 
@@ -196,7 +196,7 @@ class BFS:
 
     # generates the heuristic value
     def getHeuristics(self, state):
-        return state.count('0')
+        return state.count('1')
 
     # return null if not found
     # else return final solution
@@ -216,7 +216,8 @@ class BFS:
     # return search path
     def getSearchPath(self):
         searchPath = ""
-        for i in range(len(self.closedList)):
-            searchPath += "0 0 0 " + self.closedList[i][2] + "\n"
+        for i in range(len(self.solution)):
+            searchPath += str(self.getHeuristics(self.solution[i][2])) + " " + str(self.getHeuristics(
+                self.solution[i][2])) + " 0 " + self.solution[i][2] + "\n"
 
         return searchPath

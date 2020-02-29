@@ -29,7 +29,7 @@ loader = ld.Loader("test.txt")
 #     writer.createSearchSolutionFile("solution", solution)
 #     writer.createSearchSolutionFile("search", search)
 #     end = time.time()
-#     print(end - start)
+#     print(end - start, "second(s)")
 
 # get solution for bfs
 for i in range(loader.getMyPuzzleSize()):
@@ -37,7 +37,7 @@ for i in range(loader.getMyPuzzleSize()):
     start = time.time()
     # loads puzzle #1
     initSet = loader.getMyPuzzleAt(i)
-    bfSearcher = bfs.BFS(initSet.getMaxDeepth(), False)
+    bfSearcher = bfs.BFS(initSet.getMaxSearchPathLength(), False)
     # bfSearcher = bfs.BFS(4, True)
     bfSearcher.addRoot(initSet.get1DState())
     # runs search using DFS method
@@ -54,4 +54,4 @@ for i in range(loader.getMyPuzzleSize()):
     writer.createSearchSolutionFile("solution", solution)
     writer.createSearchSolutionFile("search", search)
     end = time.time()
-    print(end - start)
+    print(end - start, "second(s)")
