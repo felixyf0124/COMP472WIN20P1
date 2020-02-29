@@ -1,7 +1,7 @@
 import DotPuzzle as dp
 
 
-class DFS:
+class DFS: # using list / results end in sec
     # constructor add Max depth limit
     def __init__(self, max_d, debug):
         self.closedList = []  # = search path

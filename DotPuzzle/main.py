@@ -1,7 +1,8 @@
 # import BFS as bfs
 import BestFirst as bfs
 import AStar as ass
-import DFS as dfs
+# import DFS as dfs
+import DepthFirst as dfs
 import Loader as ld
 import SolutionWriter as wr
 import time
@@ -10,28 +11,28 @@ import time
 loader = ld.Loader("test.txt")
 
 # get solution for dfs
-# for i in range(loader.getMyPuzzleSize()):
-#     # calculate the time
-#     start = time.time()
-#     # loads puzzle #1
-#     initSet = loader.getMyPuzzleAt(i)
-#     dfSearcher = dfs.DFS(initSet.getMaxDeepth(), False)
-#     dfSearcher.addRoot(initSet.get1DState())
-#     # runs search using DFS method
-#     dfSearcher.doSearch()
-#     print("FINAL SOLUTION")
-#     print(dfSearcher.solution)
-#     print("SOL FOUND?")
-#     print(dfSearcher.isSolFound)
-#     solution = dfSearcher.getFinalSolution()
-#     search = dfSearcher.getSearchPath()
-#     print(solution)
-#     # prints output
-#     writer = wr.SolutionWriter(i, "dfs")
-#     writer.createSearchSolutionFile("solution", solution)
-#     writer.createSearchSolutionFile("search", search)
-#     end = time.time()
-#     print(end - start, "second(s)")
+for i in range(loader.getMyPuzzleSize()):
+    # calculate the time
+    start = time.time()
+    # loads puzzle #1
+    initSet = loader.getMyPuzzleAt(i)
+    dfSearcher = dfs.DepthFirst(initSet.getMaxDeepth(), False)
+    dfSearcher.addRoot(initSet.get1DState())
+    # runs search using DFS method
+    dfSearcher.doSearch()
+    print("FINAL SOLUTION")
+    print(dfSearcher.solution)
+    print("SOL FOUND?")
+    print(dfSearcher.isSolFound)
+    solution = dfSearcher.getFinalSolution()
+    search = dfSearcher.getSearchPath()
+    print(solution)
+    # prints output
+    writer = wr.SolutionWriter(i, "dfs")
+    writer.createSearchSolutionFile("solution", solution)
+    writer.createSearchSolutionFile("search", search)
+    end = time.time()
+    print(end - start, "second(s)")
 
 # get solution for Best-First search
 for i in range(loader.getMyPuzzleSize()):
